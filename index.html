@@ -213,5 +213,16 @@ ul.checks li::before{content:"❧";position:absolute;left:0;top:9px;font-size:16
   </div>
 </div>
 
+<script>
+(function(){var W='https://stats.khadybeauty.com';var K='kb_sid';var sid=null;try{sid=sessionStorage.getItem(K);}catch(e){}
+var fresh=!sid;if(!sid){sid=Math.random().toString(36).slice(2,10)+Date.now().toString(36);try{sessionStorage.setItem(K,sid);}catch(e){}}
+var src=(new URLSearchParams(location.search).get('src')||'direct').slice(0,32);
+function send(ev){try{var body=JSON.stringify({sid:sid,ev:ev,src:src,path:location.pathname,ref:document.referrer});
+if(navigator.sendBeacon){navigator.sendBeacon(W+'/e',new Blob([body],{type:'text/plain'}));}else{fetch(W+'/e',{method:'POST',body:body,keepalive:true});}}catch(e){}}
+if(fresh)send('session');send('view');
+document.querySelectorAll('a.btn').forEach(function(a){a.href=W+'/go?sid='+encodeURIComponent(sid)+'&src='+encodeURIComponent(src);});
+document.addEventListener('click',function(e){var a=e.target.closest('a.btn');if(a)send('atc');},true);
+})();
+</script>
 </body>
 </html>
