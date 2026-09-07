@@ -220,7 +220,8 @@ var src=(new URLSearchParams(location.search).get('src')||'direct').slice(0,32);
 function send(ev){try{var body=JSON.stringify({sid:sid,ev:ev,src:src,path:location.pathname,ref:document.referrer});
 if(navigator.sendBeacon){navigator.sendBeacon(W+'/e',new Blob([body],{type:'text/plain'}));}else{fetch(W+'/e',{method:'POST',body:body,keepalive:true});}}catch(e){}}
 if(fresh)send('session');send('view');
-document.querySelectorAll('a.btn').forEach(function(a){a.href=W+'/go?sid='+encodeURIComponent(sid)+'&src='+encodeURIComponent(src);});
+/* buy buttons keep their direct Hotmart link unless the counter is reachable */
+try{fetch(W+'/health',{mode:'no-cors',cache:'no-store'}).then(function(){document.querySelectorAll('a.btn').forEach(function(a){a.href=W+'/go?sid='+encodeURIComponent(sid)+'&src='+encodeURIComponent(src);});}).catch(function(){});}catch(e){}
 document.addEventListener('click',function(e){var a=e.target.closest('a.btn');if(a)send('atc');},true);
 })();
 </script>
